@@ -22,8 +22,14 @@ This repository contains a **quick reference table** of commonly used algorithms
 | Prime Factorization      | O(√n)                           | O(√n)                         | O(√n)                           | O(log n)                       | Break number into prime factors                   |
 | Graham Scan (Convex Hull)| O(n log n)                      | O(n log n)                    | O(n log n)                      | O(n)                           | Compute convex hull of points in 2D               |
 |--------------------------|---------------------------------|-------------------------------|---------------------------------|--------------------------------|---------------------------------------------------|
-| Modular Arithmetic       | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | O(1) | Basic operations under  |                                                                                                                                                                                 modulo; division requires inverse |
-|--------------------------|---------------------------------|-------------------------------|---------------------------------|--------------------------------|---------------------------------------------------|
+
+
+
+
+
+```
+```
+Modular Arithmetic       | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | O(1) | Basic operations under  | modulo; division requires inverse |
 ```
 
 - [Click me](https://ideone.com/LUBmh4)

@@ -24,7 +24,7 @@ This repository contains a **quick reference table** of commonly used algorithms
 | Modular Arithmetic       | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | O(1) | Basic operations under modulo; division requires inverse |
 
 ```
-##alog
+
 ```
 sayem
 ```

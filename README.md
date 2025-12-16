@@ -5,6 +5,7 @@ This repository contains a **quick reference table** of commonly used algorithms
 ## Algorithm Complexity Table
 
 ```text
+|--------------------------|---------------------------------|-------------------------------|---------------------------------|--------------------------------|---------------------------------------------------|
 | Name                     | Best Case                       | Worst Case                    | Time Complexity                 | Space Complexity               | Notes / Use Case                                  |
 |--------------------------|---------------------------------|-------------------------------|---------------------------------|--------------------------------|---------------------------------------------------|
 | Selection Sort           | O(n²)                           | O(n²)                         | O(n²)                           | O(1)                           | Simple, in-place sort; not efficient for large n  |
@@ -21,8 +22,8 @@ This repository contains a **quick reference table** of commonly used algorithms
 | Prime Factorization      | O(√n)                           | O(√n)                         | O(√n)                           | O(log n)                       | Break number into prime factors                   |
 | Graham Scan (Convex Hull)| O(n log n)                      | O(n log n)                    | O(n log n)                      | O(n)                           | Compute convex hull of points in 2D               |
 |--------------------------|---------------------------------|-------------------------------|---------------------------------|--------------------------------|---------------------------------------------------|
-| Modular Arithmetic       | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | O(1) | Basic operations under modulo; division requires inverse |
-
+| Modular Arithmetic       | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | Addition/Sub/Mul: O(1) <br> Division: O(log mod) | O(1) | Basic operations under  |                                                                                                                                                                                 modulo; division requires inverse |
+|--------------------------|---------------------------------|-------------------------------|---------------------------------|--------------------------------|---------------------------------------------------|
 ```
 
 - [Click me](https://ideone.com/LUBmh4)

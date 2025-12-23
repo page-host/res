@@ -3,32 +3,32 @@
 using namespace std;
 
 int main() {
-    int n = 4;
-    int adjMatrix[4][4] = {
-        {0,1,1,0},
-        {1,0,1,1},
-        {1,1,0,0},
-        {0,1,0,0}
-    };
+    int n, e;
+    cin >> n >> e;
+
+    vector<vector<int>> matrix(n, vector<int>(n, 0));
+    vector<vector<int>> adj(n);
+
+    for(int i = 0; i < e; i++){
+        int u, v;
+        cin >> u >> v;
+        matrix[u][v] = matrix[v][u] = 1;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
 
     cout << "Adjacency Matrix:\n";
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
-            cout << adjMatrix[i][j] << " ";
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            cout << matrix[i][j] << " ";
         }
         cout << "\n";
     }
 
-    vector<int> adjList[4];
-    adjList[0] = {1,2};
-    adjList[1] = {0,2,3};
-    adjList[2] = {0,1};
-    adjList[3] = {1};
-
-    cout << "\nAdjacency List:\n";
-    for(int i=0;i<n;i++){
+    cout << "Adjacency List:\n";
+    for(int i = 0; i < n; i++){
         cout << i << " -> ";
-        for(int v : adjList[i]) cout << v << " ";
+        for(int v : adj[i]) cout << v << " ";
         cout << "\n";
     }
     return 0;
@@ -39,17 +39,26 @@ int main() {
 using namespace std;
 
 int main() {
-    vector<int> adj[5] = {
-        {1,2},{0,3},{0,4},{1},{2}
-    };
+    int n, e;
+    cin >> n >> e;
 
-    vector<int> visited(5,0);
+    vector<vector<int>> adj(n);
+    for(int i = 0; i < e; i++){
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    int src;
+    cin >> src;
+
+    vector<int> visited(n, 0);
     queue<int> q;
 
-    q.push(0);
-    visited[0] = 1;
+    visited[src] = 1;
+    q.push(src);
 
-    cout << "BFS Traversal: ";
     while(!q.empty()){
         int u = q.front(); q.pop();
         cout << u << " ";
@@ -69,15 +78,24 @@ graph.
 using namespace std;
 
 int main() {
-    vector<int> adj[5] = {
-        {1,2},{3},{4},{},{ }
-    };
+    int n, e;
+    cin >> n >> e;
 
-    vector<int> depth(5,-1);
+    vector<vector<int>> adj(n);
+    for(int i = 0; i < e; i++){
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+    }
+
+    int src;
+    cin >> src;
+
+    vector<int> depth(n, -1);
     queue<int> q;
 
-    q.push(0);
-    depth[0] = 0;
+    depth[src] = 0;
+    q.push(src);
 
     while(!q.empty()){
         int u = q.front(); q.pop();
@@ -92,10 +110,9 @@ int main() {
     int maxDepth = 0;
     for(int d : depth) maxDepth = max(maxDepth, d);
 
-    cout << "Maximum Depth: " << maxDepth;
+    cout << maxDepth;
     return 0;
 }
-
 
 4. Find the Depth first search Traversal on a given graph.
 
@@ -103,21 +120,30 @@ int main() {
 using namespace std;
 
 int main() {
-    vector<int> adj[5] = {
-        {1,2},{3},{4},{},{}
-    };
+    int n, e;
+    cin >> n >> e;
 
-    vector<int> visited(5,0);
+    vector<vector<int>> adj(n);
+    for(int i = 0; i < e; i++){
+        int u, v;
+        cin >> u >> v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    int src;
+    cin >> src;
+
+    vector<int> visited(n, 0);
     stack<int> st;
-    st.push(0);
+    st.push(src);
 
-    cout << "DFS Traversal: ";
     while(!st.empty()){
         int u = st.top(); st.pop();
         if(!visited[u]){
             visited[u] = 1;
             cout << u << " ";
-            for(int i = adj[u].size()-1; i>=0; i--){
+            for(int i = adj[u].size() - 1; i >= 0; i--){
                 st.push(adj[u][i]);
             }
         }
@@ -133,31 +159,33 @@ shortest path algorithms.
 using namespace std;
 
 int main() {
-    int n = 5;
-    vector<pair<int,int>> adj[5] = {
-        {{1,2},{2,4}},
-        {{2,1},{3,7}},
-        {{4,3}},
-        {{4,1}},
-        {}
-    };
+    int n, e;
+    cin >> n >> e;
+
+    vector<vector<pair<int,int>>> adj(n);
+    for(int i = 0; i < e; i++){
+        int u, v, w;
+        cin >> u >> v >> w;
+        adj[u].push_back({v, w});
+        adj[v].push_back({u, w});
+    }
+
+    int src;
+    cin >> src;
 
     vector<int> dist(n, INT_MAX);
-    dist[0] = 0;
-
     priority_queue<pair<int,int>, vector<pair<int,int>>, greater<>> pq;
-    pq.push({0,0});
+
+    dist[src] = 0;
+    pq.push({0, src});
 
     while(!pq.empty()){
         int u = pq.top().second;
-        int d = pq.top().first;
         pq.pop();
 
-        if(d > dist[u]) continue;
-
-        for(auto e : adj[u]){
-            int v = e.first;
-            int w = e.second;
+        for(auto p : adj[u]){
+            int v = p.first;
+            int w = p.second;
             if(dist[v] > dist[u] + w){
                 dist[v] = dist[u] + w;
                 pq.push({dist[v], v});
@@ -165,13 +193,11 @@ int main() {
         }
     }
 
-    cout << "Shortest distances:\n";
-    for(int i=0;i<n;i++){
-        cout << "0 -> " << i << " = " << dist[i] << "\n";
+    for(int i = 0; i < n; i++){
+        cout << dist[i] << " ";
     }
     return 0;
 }
-
 
 6. Use Euclidean Algorithm to find the GCD of two given integers.
 
@@ -179,13 +205,16 @@ int main() {
 using namespace std;
 
 int main() {
-    int a = 48, b = 18;
+    int a, b;
+    cin >> a >> b;
+
     while(b != 0){
         int r = a % b;
         a = b;
         b = r;
     }
-    cout << "GCD = " << a;
+
+    cout << a;
     return 0;
 }
 
@@ -196,13 +225,17 @@ int main() {
 using namespace std;
 
 int main() {
-    int w[] = {10,20,30};
-    int v[] = {60,100,120};
-    int n = 3, W = 50;
+    int n, W;
+    cin >> n >> W;
+
+    vector<int> weight(n), value(n);
+    for(int i = 0; i < n; i++){
+        cin >> weight[i] >> value[i];
+    }
 
     vector<pair<double,int>> ratio;
-    for(int i=0;i<n;i++){
-        ratio.push_back({(double)v[i]/w[i], i});
+    for(int i = 0; i < n; i++){
+        ratio.push_back({(double)value[i] / weight[i], i});
     }
 
     sort(ratio.rbegin(), ratio.rend());
@@ -210,18 +243,19 @@ int main() {
     double maxValue = 0;
     for(auto r : ratio){
         int i = r.second;
-        if(W >= w[i]){
-            W -= w[i];
-            maxValue += v[i];
+        if(W >= weight[i]){
+            W -= weight[i];
+            maxValue += value[i];
         } else {
             maxValue += r.first * W;
             break;
         }
     }
 
-    cout << "Maximum value: " << maxValue;
+    cout << maxValue;
     return 0;
 }
+
 
 8. Use Optimal Substructure property to find the maximum number of tasks
 that you can take from a given lists of tasks (Each task contains the
@@ -231,9 +265,13 @@ following information: Start time, Finish Time)
 using namespace std;
 
 int main() {
-    vector<pair<int,int>> tasks = {
-        {1,3},{2,5},{4,7},{6,9},{8,10}
-    };
+    int n;
+    cin >> n;
+
+    vector<pair<int,int>> tasks(n);
+    for(int i = 0; i < n; i++){
+        cin >> tasks[i].first >> tasks[i].second;
+    }
 
     sort(tasks.begin(), tasks.end(),
          [](auto a, auto b){ return a.second < b.second; });
@@ -241,14 +279,14 @@ int main() {
     int count = 1;
     int lastFinish = tasks[0].second;
 
-    for(int i=1;i<tasks.size();i++){
+    for(int i = 1; i < n; i++){
         if(tasks[i].first >= lastFinish){
             count++;
             lastFinish = tasks[i].second;
         }
     }
 
-    cout << "Maximum number of tasks: " << count;
+    cout << count;
     return 0;
 }
 
@@ -260,23 +298,23 @@ Matching Algorithm.
 using namespace std;
 
 int main() {
-    string S = "ABABABC";
-    string P = "ABAB";
+    string S, P;
+    cin >> S >> P;
 
     int n = S.size(), m = P.size();
 
-    for(int i=0;i<=n-m;i++){
+    for(int i = 0; i <= n - m; i++){
         int j;
-        for(j=0;j<m;j++){
-            cout << "Compare " << S[i+j] << " with " << P[j] << "\n";
-            if(S[i+j] != P[j]) break;
+        for(j = 0; j < m; j++){
+            if(S[i + j] != P[j]) break;
         }
         if(j == m){
-            cout << "Pattern found at index " << i << "\n";
+            cout << i << " ";
         }
     }
     return 0;
 }
+
 
 10. Use Rabin-Karp Algorithm for String matching, use polynomial rolling hash
 as the Hash Function.
@@ -285,30 +323,31 @@ as the Hash Function.
 using namespace std;
 
 int main() {
-    string S = "ABABABC";
-    string P = "ABAB";
+    string S, P;
+    cin >> S >> P;
 
     int n = S.size(), m = P.size();
-    int base = 31, mod = 1e9+7;
+    int base = 31, mod = 1000000007;
 
     long long pHash = 0, sHash = 0, power = 1;
 
-    for(int i=0;i<m;i++){
-        pHash = (pHash*base + P[i]) % mod;
-        sHash = (sHash*base + S[i]) % mod;
-        if(i < m-1) power = (power * base) % mod;
+    for(int i = 0; i < m; i++){
+        pHash = (pHash * base + P[i]) % mod;
+        sHash = (sHash * base + S[i]) % mod;
+        if(i < m - 1) power = (power * base) % mod;
     }
 
-    for(int i=0;i<=n-m;i++){
+    for(int i = 0; i <= n - m; i++){
         if(pHash == sHash){
-            if(S.substr(i,m) == P){
-                cout << "Pattern found at index " << i << "\n";
+            if(S.substr(i, m) == P){
+                cout << i << " ";
             }
         }
-        if(i < n-m){
-            sHash = (sHash - S[i]*power % mod + mod) % mod;
-            sHash = (sHash*base + S[i+m]) % mod;
+        if(i < n - m){
+            sHash = (sHash - S[i] * power % mod + mod) % mod;
+            sHash = (sHash * base + S[i + m]) % mod;
         }
     }
     return 0;
 }
+

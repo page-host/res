@@ -371,3 +371,262 @@ Cursor FOR loop is preferred because it automatically opens, fetches, and closes
 
 ---
 
+---
+
+## Q19. Write a procedure to update job_id of an employee.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE update_job (
+  p_emp_id employees.employee_id%TYPE,
+  p_job_id employees.job_id%TYPE
+)
+AS
+BEGIN
+  UPDATE employees
+  SET job_id = p_job_id
+  WHERE employee_id = p_emp_id;
+
+  DBMS_OUTPUT.PUT_LINE('Job updated successfully');
+END;
+/
+```
+
+---
+
+## Q20. Write a procedure to transfer an employee to another department.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE transfer_employee (
+  p_emp_id employees.employee_id%TYPE,
+  p_dept_id departments.department_id%TYPE
+)
+AS
+BEGIN
+  UPDATE employees
+  SET department_id = p_dept_id
+  WHERE employee_id = p_emp_id;
+
+  DBMS_OUTPUT.PUT_LINE('Employee transferred');
+END;
+/
+```
+
+---
+
+## Q21. Write a procedure to display employees without commission.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE no_commission_emp
+AS
+BEGIN
+  FOR rec IN (SELECT first_name FROM employees WHERE commission_pct IS NULL)
+  LOOP
+    DBMS_OUTPUT.PUT_LINE(rec.first_name);
+  END LOOP;
+END;
+/
+```
+
+---
+
+## Q22. Write a procedure using WHILE loop to display first N employees.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE first_n_employees (
+  p_n NUMBER
+)
+AS
+  v_count NUMBER := 0;
+BEGIN
+  FOR rec IN (SELECT first_name FROM employees)
+  LOOP
+    EXIT WHEN v_count = p_n;
+    DBMS_OUTPUT.PUT_LINE(rec.first_name);
+    v_count := v_count + 1;
+  END LOOP;
+END;
+/
+```
+
+---
+
+## Q23. Write a procedure to check whether an employee exists.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE check_employee (
+  p_emp_id employees.employee_id%TYPE
+)
+AS
+  v_count NUMBER;
+BEGIN
+  SELECT COUNT(*)
+  INTO v_count
+  FROM employees
+  WHERE employee_id = p_emp_id;
+
+  IF v_count = 0 THEN
+    DBMS_OUTPUT.PUT_LINE('Employee does not exist');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('Employee exists');
+  END IF;
+END;
+/
+```
+
+---
+
+## Q24. Write a procedure to display department-wise employee count.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE dept_emp_count
+AS
+BEGIN
+  FOR rec IN (
+    SELECT department_id, COUNT(*) cnt
+    FROM employees
+    GROUP BY department_id
+  ) LOOP
+    DBMS_OUTPUT.PUT_LINE('Dept ' || rec.department_id || ' : ' || rec.cnt);
+  END LOOP;
+END;
+/
+```
+
+---
+
+## Q25. Write a procedure to demonstrate COMMIT and ROLLBACK.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE salary_update_commit (
+  p_emp_id employees.employee_id%TYPE
+)
+AS
+BEGIN
+  UPDATE employees
+  SET salary = salary + 500
+  WHERE employee_id = p_emp_id;
+
+  COMMIT;
+  DBMS_OUTPUT.PUT_LINE('Salary updated and committed');
+END;
+/
+```
+
+---
+
+## Q26. Write a procedure using SAVEPOINT.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE salary_savepoint_demo
+AS
+BEGIN
+  UPDATE employees SET salary = salary + 100 WHERE department_id = 10;
+  SAVEPOINT sp1;
+
+  UPDATE employees SET salary = salary + 100 WHERE department_id = 20;
+  ROLLBACK TO sp1;
+
+  COMMIT;
+  DBMS_OUTPUT.PUT_LINE('Savepoint demonstrated');
+END;
+/
+```
+
+---
+
+## Q27. Write a procedure to handle TOO_MANY_ROWS exception.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE emp_by_job (
+  p_job_id employees.job_id%TYPE
+)
+AS
+  v_name employees.first_name%TYPE;
+BEGIN
+  SELECT first_name
+  INTO v_name
+  FROM employees
+  WHERE job_id = p_job_id;
+
+  DBMS_OUTPUT.PUT_LINE(v_name);
+EXCEPTION
+  WHEN TOO_MANY_ROWS THEN
+    DBMS_OUTPUT.PUT_LINE('More than one employee found');
+END;
+/
+```
+
+---
+
+## Q28. Write a procedure to show SYSDATE and employee hire date difference.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE emp_experience (
+  p_emp_id employees.employee_id%TYPE
+)
+AS
+  v_years NUMBER;
+BEGIN
+  SELECT FLOOR(MONTHS_BETWEEN(SYSDATE, hire_date)/12)
+  INTO v_years
+  FROM employees
+  WHERE employee_id = p_emp_id;
+
+  DBMS_OUTPUT.PUT_LINE('Experience: ' || v_years || ' years');
+END;
+/
+```
+
+---
+
+## Q29. Write a procedure to insert a new employee.
+
+**Answer:**
+
+```sql
+CREATE OR REPLACE PROCEDURE add_employee (
+  p_id employees.employee_id%TYPE,
+  p_name employees.first_name%TYPE,
+  p_job employees.job_id%TYPE,
+  p_salary employees.salary%TYPE
+)
+AS
+BEGIN
+  INSERT INTO employees (employee_id, first_name, job_id, salary)
+  VALUES (p_id, p_name, p_job, p_salary);
+
+  DBMS_OUTPUT.PUT_LINE('Employee inserted');
+END;
+/
+```
+
+---
+
+## Q30. Why should procedures be used in database applications?
+
+**Answer:**
+Procedures improve performance, security, reusability, and maintainability by keeping business logic inside the database.
+
+---
+
+
